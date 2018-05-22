@@ -1,0 +1,79 @@
+---
+#configure module wide defaults, don't configure any of the CFT/app specifc defaults. 
+# CFT/app specifc defaults should be configured in the template file. 
+
+
+
+
+
+
+
+# CFT global parameters
+bigip_mgmt_port: 443
+validate_certs: no
+
+
+
+
+# Internal varaiables (used to build the module)
+
+
+as3_rpm: "f5-appsvcs-3.0.0-29.noarch.rpm"
+
+# iAPP VARS
+# SERVICE VARS
+service: "www.demo.f5example.com"
+service_name: "www_demo_f5example_com"
+partition: "Common"
+strict_updates: false
+
+vs_address: "0.0.0.0"
+vs_mask: "0.0.0.0"
+vs_port: "443"
+## SSL CERT 
+#client_ssl_cert_name: "{{ service_name }}"
+client_ssl_cert_name: "default"
+
+
+logging_profile_name: "rs_asm_log_to_splunk"
+logging_all_local_profile_name: "rs_log_all_local"
+dosl7_profile_name: "rs_dosl7_profile"
+avr_profile_name: "rs_avr_profile"
+rs_http_profile_name: "rs_http_profile"
+
+#DOSL7 config 
+#proactive bot defense - disabled / always - 
+pbd_mode: "disabled"
+
+ltm_policy_name: "{{ service_name }}_ltm_policy" 
+asm_policy_name: "linux-high"
+asm_policy_base64: "{{ lookup('file', 'asm-policy-' + asm_policy_name + '.xml') | b64encode }}"
+
+
+
+
+
+# Pool Vars
+applicationPoolTagKey: "aws:autoscaling:groupName"
+applicationPoolTagValue: "dev-pm-demo-application-appAutoscaleGroup-J6CION6HARDT"
+
+sd_iApp_template_name: "f5.service_discovery"
+sd_iApp_service_name: "{{ service_name }}_sd"
+sd_jinja_template_name: "{{ sd_iApp_template_name + '.j2' }}"
+
+# Pool Name ex.
+# /Common/www_demo_f5example_com_service_discovery.app/www_demo_f5example_com_service_discovery_pool
+application_poolName: "/{{partition}}/{{service_name}}.app/{{sd_iApp_service_name}}_pool"
+
+
+# iApp Specific variables
+iApp_service_name: "{{ service_name }}"
+# TEMPLATE NAME:
+iApp_template_name: "appsvcs_v2.0.004"
+# TEMPLATE TYPE
+iApp_template_type: "https_vip_w_waf"
+# iApp_template_type: "https_vip_w_waf"
+#jinja_template_name: "{{ iApp_template_type + '_' + iApp_template_name + '.j2' }}"
+
+
+

@@ -1,0 +1,21 @@
+---
+# onboard a bigip, sets hardening rules and default profiles. 
+
+- hosts: localhost
+  connection: local
+  gather_facts: False
+  vars:
+     state: "present" # extra variable will override this value
+     ansible_ssh_user: "{{vault_ansible_ssh_user}}" # the user ansible uses to ssh
+     ansible_ssh_host: "{{ bigip_ip_addr }}" # the host ansible will ssh to with ssh tasks
+     ansible_ssh_private_key_file: "{{ vault_ansible_ssh_private_key_file }}" # the private key file name
+  vars_files:
+  - /home/snops/f5-rs-global-vars-vault.yaml  
+  environment:
+      F5_SERVER: "{{ bigip_ip_addr }}"
+      F5_USER: "{{ vault_bigip_rest_user }}"
+      F5_PASSWORD: "{{ vault_bigip_rest_password }}"  #Inherit from vault
+      F5_SERVER_PORT: "{{ bigip_mgmt_port }}"
+      F5_VALIDATE_CERTS: "{{ validate_certs }}"
+  roles:
+    - genral_onboarding

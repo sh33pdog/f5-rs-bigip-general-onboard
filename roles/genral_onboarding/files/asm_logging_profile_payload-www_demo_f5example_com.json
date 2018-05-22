@@ -1,0 +1,68 @@
+{
+    "name": "asm_log_to_splunk",
+    "partition": "Common",
+    "application": [
+        {
+            "name": "asm_log_to_splunk",
+            "facility": "local0",
+            "filter": [
+                {
+                    "name": "protocol",
+                    "values": [
+                        "all"
+                    ]
+                },
+                {
+                    "name": "request-type",
+                    "values": [
+                        "all"
+                    ]
+                },
+                {
+                    "name": "search-all"
+                }
+            ],
+            "format": {
+                "fieldDelimiter": ",",
+                "type": "predefined"
+            },
+            "guaranteeLogging": "disabled",
+            "guaranteeResponseLogging": "disabled",
+            "localStorage": "disabled",
+            "logicOperation": "or",
+            "maximumEntryLength": "2k",
+            "maximumHeaderSize": "any",
+            "maximumQuerySize": "any",
+            "maximumRequestSize": "any",
+            "partition": "Common",
+            "protocol": "tcp",
+            "remoteStorage": "splunk",
+            "reportAnomalies": "disabled",
+            "responseLogging": "none",
+            "servers": [ "34.218.14.105:10514" ]
+        }
+    ],
+	    "botDefense": [
+        {
+            "name": "asm_log_to_splunk",
+            "partition": "Common",
+            "filter": {
+                "logBotSignatureMatchedRequests": "enabled",
+                "logCaptchaChallengedRequests": "enabled",
+                "logChallengedRequests": "enabled",
+                "logIllegalRequests": "enabled",
+                "logLegalRequests": "enabled"
+            },
+            "localPublisher": "/Common/local-db-publisher",
+            "remotePublisher": "/Common/logging-publisher-f5_analytics"
+        }
+    ],
+	    "dosApplication": [
+        {
+            "name": "asm_log_to_splunk",
+            "partition": "Common",
+            "localPublisher": "/Common/local-db-publisher",
+            "remotePublisher": "/Common/logging-publisher-f5_analytics"
+        }
+    ]
+}

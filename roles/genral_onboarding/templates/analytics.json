@@ -1,0 +1,194 @@
+{
+    "tables": [
+        {
+            "name": "applicationmapping__mappings",
+            "columnNames": [
+                "priority",
+                "type",
+                "datasource",
+                "regex",
+                "mappingaction"
+            ],
+            "rows": [
+                {
+                    "row": [
+                        "10",
+                        "App Name",
+                        "iApp Name",
+                        ".*\\/([^/]+)\\.app",
+                        "Map"
+                    ]
+                },
+                {
+                    "row": [
+                        "20",
+                        "App Name",
+                        "iApp Name",
+                        "analytics",
+                        "Ignore"
+                    ]
+                }
+            ]
+        }
+    ],
+    "variables": [
+        {
+            "name": "alerts__useexistingsplunk",
+            "encrypted": "no",
+            "value": "Yes"
+        },
+        {
+            "name": "applicationmapping__exportmapping",
+            "encrypted": "no",
+            "value": "ezExfSB7QXBwIE5hbWV+dmlydHVhbF9uYW1lfiguKil+TWFwfm5vbmV+bm9uZX0"
+        },
+        {
+            "name": "applicationmapping__irulesearch",
+            "encrypted": "no",
+            "value": "Yes"
+        },
+        {
+            "name": "applicationmapping__mode",
+            "encrypted": "no",
+            "value": "Define"
+        },
+        {
+            "name": "basic__alerts",
+            "encrypted": "no",
+            "value": "Yes"
+        },
+        {
+            "name": "basic__devicegroupoverride",
+            "encrypted": "no"
+        },
+        {
+            "name": "basic__facility",
+            "encrypted": "no"
+        },
+        {
+            "name": "basic__format",
+            "encrypted": "no",
+            "value": "Splunk"
+        },
+        {
+            "name": "basic__ihealth",
+            "encrypted": "no",
+            "value": "Yes"
+        },
+        {
+            "name": "basic__logging",
+            "encrypted": "no",
+            "value": "Yes"
+        },
+        {
+            "name": "basic__rbac",
+            "encrypted": "no",
+            "value": "No"
+        },
+        {
+            "name": "basic__stats",
+            "encrypted": "no",
+            "value": "Yes"
+        },
+        {
+            "name": "basic__syslog",
+            "encrypted": "no",
+            "value": "Yes"
+        },
+        {
+            "name": "basic__tenantdefault",
+            "encrypted": "no",
+            "value": "{{ vault_dac_user }}"
+        },
+        {
+            "name": "ihealth__dayofweek",
+            "encrypted": "no",
+            "value": "Sunday"
+        },
+        {
+            "name": "ihealth__endtime",
+            "encrypted": "no",
+            "value": "4:00"
+        },
+        {
+            "name": "ihealth__proxy",
+            "encrypted": "no",
+            "value": "No"
+        },
+        {
+            "name": "ihealth__schedule",
+            "encrypted": "no",
+            "value": "Weekly"
+        },
+        {
+            "name": "ihealth__time",
+            "encrypted": "no",
+            "value": "1:00"
+        },
+        {
+            "name": "intro__advanced",
+            "encrypted": "no",
+            "value": "hide"
+        },
+        {
+            "name": "intro__help",
+            "encrypted": "no",
+            "value": "show"
+        },
+        {
+            "name": "logging__sendadm",
+            "encrypted": "no",
+            "value": "No"
+        },
+        {
+            "name": "logging__sendriskdata",
+            "encrypted": "no",
+            "value": "No"
+        },
+        {
+            "name": "logging__sendrisklogins",
+            "encrypted": "no",
+            "value": "No"
+        },
+        {
+            "name": "logging__useexistingsplunk",
+            "encrypted": "no",
+            "value": "Yes"
+        },
+        {
+            "name": "statistics__proxy",
+            "encrypted": "no",
+            "value": "No"
+        },
+        {
+            "name": "statistics__pushinterval",
+            "encrypted": "no",
+            "value": "60"
+        },
+        {
+            "name": "statistics__splunkapikey",
+            "encrypted": "no",
+            "value": "{{ vault_splunk_key }}"
+        },
+        {
+            "name": "statistics__splunkdestinationip",
+            "encrypted": "no",
+            "value": "{{ vault_splunk_addr }}"
+        },
+        {
+            "name": "statistics__splunkdestinationport",
+            "encrypted": "no",
+            "value": "{{ vault_splunk_port }}"
+        },
+        {
+            "name": "statistics__splunkdestinationprotocol",
+            "encrypted": "no",
+            "value": "HTTPS"
+        },
+        {
+            "name": "syslog__useexistingsplunk",
+            "encrypted": "no",
+            "value": "Yes"
+        }
+    ]
+}

@@ -1,0 +1,15 @@
+---
+
+
+bigip
+
+[bigips]
+bigip
+
+[analyticshosts]
+analytics.example.com
+
+
+
+
+

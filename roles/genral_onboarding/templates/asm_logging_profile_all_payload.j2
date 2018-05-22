@@ -1,0 +1,44 @@
+{
+    "name": "{{ logging_all_local_profile_name }}",
+    "partition": "{{partition}}",
+    "application": [
+        {
+            "name": "{{ logging_all_local_profile_name }}",
+            "facility": "local0",
+            "filter": [
+                {
+                    "name": "protocol",
+                    "values": [
+                        "all"
+                    ]
+                },
+                {
+                    "name": "request-type",
+                    "values": [
+                        "all"
+                    ]
+                },
+                {
+                    "name": "search-all"
+                }
+            ],
+            "format": {
+                "fieldDelimiter": ",",
+                "type": "predefined"
+            },
+            "guaranteeLogging": "disabled",
+            "guaranteeResponseLogging": "disabled",
+            "localStorage": "enabled",
+            "logicOperation": "or",
+            "maximumEntryLength": "2k",
+            "maximumHeaderSize": "any",
+            "maximumQuerySize": "any",
+            "maximumRequestSize": "any",
+            "partition": "Common",
+            "protocol": "tcp",
+            "remoteStorage": "none",
+            "reportAnomalies": "disabled",
+            "responseLogging": "none"
+        }
+    ]
+}
