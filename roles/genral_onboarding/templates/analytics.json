@@ -12,10 +12,10 @@
             "rows": [
                 {
                     "row": [
-                        "10",
+                        "30",
                         "App Name",
-                        "iApp Name",
-                        ".*\\/([^/]+)\\.app",
+                        "Virtual Name",
+                        "(.*)",
                         "Map"
                     ]
                 },
@@ -23,7 +23,7 @@
                     "row": [
                         "20",
                         "App Name",
-                        "iApp Name",
+                        "Virtual Name",
                         "analytics",
                         "Ignore"
                     ]
@@ -40,7 +40,7 @@
         {
             "name": "applicationmapping__exportmapping",
             "encrypted": "no",
-            "value": "ezExfSB7QXBwIE5hbWV+dmlydHVhbF9uYW1lfiguKil+TWFwfm5vbmV+bm9uZX0"
+            "value": "ezEwfSB7QXBwIE5hbWV+dmlydHVhbF9uYW1lfiguKil+TWFwfn59IHsyMH0ge0FwcCBOYW1lfnZpcnR1YWxfbmFtZX4uKmFuYWx5dGljcy4qfklnbm9yZX5+fSA="
         },
         {
             "name": "applicationmapping__irulesearch",
