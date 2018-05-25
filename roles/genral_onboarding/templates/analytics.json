@@ -63,7 +63,8 @@
         },
         {
             "name": "basic__facility",
-            "encrypted": "no"
+            "encrypted": "no",
+			"value": "{{ aws_region }}-{{ vpc }}"
         },
         {
             "name": "basic__format",
