@@ -14,7 +14,6 @@ validate_certs: no
 
 
 
-
 # Internal varaiables (used to build the module)
 
 
@@ -41,6 +40,7 @@ logging_all_local_profile_name: "rs_log_all_local"
 dosl7_profile_name: "rs_dosl7_profile"
 avr_profile_name: "rs_avr_profile"
 rs_http_profile_name: "rs_http_profile"
+fps_profile_name: "rs_fps_profile"
 
 #DOSL7 config 
 #proactive bot defense - disabled / always - 
