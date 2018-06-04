@@ -164,7 +164,19 @@
     url: "https://{{ bigip_ip_addr }}:{{ bigip_mgmt_port }}/mgmt/tm/security/anti-fraud/profile"
     validate_certs: no
 
-
+- name: creating DNS resolver
+  delegate_to: localhost
+  uri:
+    body: "{{ lookup('template', 'dns_resolver.j2') }}"
+    body_format: json
+    headers:
+      X-F5-Auth-Token: "{{ bigip_auth_token }}"
+    method: POST
+    status_code: 200, 201, 409
+    url: "https://{{ bigip_ip_addr }}:{{ bigip_mgmt_port }}/mgmt/tm/net/dns-resolver"
+    validate_certs: no
+    
+    
 #####################Deploying profiles again because of some consistency issues. sometimes the rest call is successful but profile wasn't actually created.
 ###############################################################################################################################################################
 

@@ -41,6 +41,7 @@ dosl7_profile_name: "rs_dosl7_profile"
 avr_profile_name: "rs_avr_profile"
 rs_http_profile_name: "rs_http_profile"
 fps_profile_name: "rs_fps_profile"
+login_password_encryption: "disabled"
 
 #DOSL7 config 
 #proactive bot defense - disabled / always - 
