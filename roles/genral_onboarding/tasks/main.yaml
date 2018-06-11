@@ -28,9 +28,9 @@
 
 - name: Configures advisory color
   bigip_command: 
-    commands: modify sys db ui.advisory.color { value green }
+    commands: modify sys db ui.advisory.color { value orange }
   delegate_to: localhost
-  when: branch == "master"  
+  when: branch == "dev"  
 
   
 - name: install websafe license id 
