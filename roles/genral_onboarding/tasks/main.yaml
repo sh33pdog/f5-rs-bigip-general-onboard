@@ -10,7 +10,29 @@
   delay: 30
   ignore_errors: yes
 
-# notice that you need to run it on every device in the cluster   
+- name: Configures hostname
+  bigip_command: 
+    commands: "modify /sys global-settings hostname {{ service_name }}-{{ branch }}-{{ aws_region}}-bigip.com"
+  delegate_to: localhost
+
+  
+- name: change advisory text
+  bigip_command: 
+    commands: "modify sys db ui.advisory.text { value {{ service_name }}-{{ branch }}-{{ aws_region}}-bigip.com }"
+  delegate_to: localhost
+
+- name: change advisory status
+  bigip_command: 
+    commands: modify sys db ui.advisory.enabled { value "true" }
+  delegate_to: localhost
+
+- name: Configures advisory color
+  bigip_command: 
+    commands: modify sys db ui.advisory.color { value green }
+  delegate_to: localhost
+  when: branch == "master"  
+
+  
 - name: install websafe license id 
   delegate_to: "{{bigip_ip_addr}}"
   raw: "modify sys db license.antifraud.id value {{ vault_websafe_license_id }}"

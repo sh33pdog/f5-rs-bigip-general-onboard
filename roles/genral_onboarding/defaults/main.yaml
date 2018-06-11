@@ -24,6 +24,7 @@ declerative_waf_rpm: "declarative_waf-0.2-001.noarch.rpm"
 # SERVICE VARS
 service: "www.demo.f5example.com"
 service_name: "www_demo_f5example_com"
+branch: "default_branch"
 partition: "Common"
 strict_updates: false
 
