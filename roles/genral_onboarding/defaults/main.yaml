@@ -27,6 +27,8 @@ service_name: "www_demo_f5example_com"
 branch: "default_branch"
 partition: "Common"
 strict_updates: false
+aws_region: "facility"
+vpc: "default_location"
 
 vs_address: "0.0.0.0"
 vs_mask: "0.0.0.0"
