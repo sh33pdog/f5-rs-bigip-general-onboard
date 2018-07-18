@@ -17,7 +17,7 @@ validate_certs: no
 # Internal varaiables (used to build the module)
 
 
-as3_rpm: "f5-appsvcs-3.0.0-34.noarch.rpm"
+as3_rpm: "f5-appsvcs-3.2.0-7.noarch.rpm"
 declerative_waf_rpm: "declarative_waf-0.2-001.noarch.rpm"
 
 # iAPP VARS
