@@ -1,18 +1,6 @@
 ---
 #general bigip onboarding for f5-rs, hardening, templates and default profiels.
 
-#- name: Wait until BIG-IP is ready to make changes
-#  delegate_to: "{{bigip_ip_addr}}"
-#  raw: "run /util bash -c 'cat /var/prompt/ps1'"
-#  until: (result.stdout.find("Active") != -1 or result.stdout.find("Standby") != -1 or result.stdout.find("Unlicensed") != -1)
-#  register: result
-#  retries: 60
-#  delay: 30
-#  ignore_errors: yes
-#  
-#  
-
-
 - name: Wait until BIG-IP is ready to make changes
   bigip_command: 
     commands: "run /util bash -c 'cat /var/prompt/ps1'"
@@ -52,12 +40,14 @@
     commands: "modify sys db license.antifraud.id value {{ vault_websafe_license_id }}"
   delegate_to: localhost
   ignore_errors: yes
+  when: '"awaf" in onboard_services'
   
 - name: install websafe license applicationencryption 
   bigip_command: 
     commands: "modify sys db license.antifraud.applicationencryption value {{ vault_websafe_license_application_encryption }}"
   delegate_to: localhost
   ignore_errors: yes
+  when: '"awaf" in onboard_services'
     
 - name: Install iApp Template for Virtual Service Insertion
   bigip_iapp_template:
@@ -66,6 +56,7 @@
     force: yes
   delegate_to: localhost
   
+  
 - name: Install iApp Template for Service Discovery of Pool Members
   delegate_to: localhost
   bigip_iapp_template:
@@ -73,7 +64,8 @@
     content: "{{ lookup('file', sd_iApp_template_name + '.tmpl') }}"
     force: yes
     partition: "{{partition}}"
-
+  when: '"aws" in onboard_cloud'
+  
 - name: Install analytics iapp template 
   delegate_to: localhost
   bigip_iapp_template:
@@ -94,7 +86,7 @@
   register: result
 
 
-
+#######################getting bigip auth token############################
 
 - name: Getting bigip authentication token
   delegate_to: localhost
@@ -122,6 +114,7 @@
     status_code: 200, 201, 409
     url: "https://{{ bigip_ip_addr }}:{{ bigip_mgmt_port }}/mgmt/tm/security/log/profile"
     validate_certs: no
+  
 
 - name: Deploying updating ASM Logging ALL Profile
   delegate_to: localhost
@@ -134,6 +127,7 @@
     status_code: 200, 201, 409
     url: "https://{{ bigip_ip_addr }}:{{ bigip_mgmt_port }}/mgmt/tm/security/log/profile"
     validate_certs: no
+  when: '"awaf" in onboard_services'
 
 - name: Deploying updating AVR profile
   delegate_to: localhost
@@ -159,30 +153,6 @@
     url: "https://{{ bigip_ip_addr }}:{{ bigip_mgmt_port }}/mgmt/tm/ltm/profile/http"
     validate_certs: no
     
-- name: Deploying updating DOSL7 profile
-  delegate_to: localhost
-  uri:
-    body: "{{ lookup('file', 'dosl7_profile_payload.json') }}"
-    body_format: json
-    headers:
-      X-F5-Auth-Token: "{{ bigip_auth_token }}"
-    method: POST
-    status_code: 200, 201, 409
-    url: "https://{{ bigip_ip_addr }}:{{ bigip_mgmt_port }}/mgmt/tm/security/dos/profile"
-    validate_certs: no
-
-- name: Deploying FPS profile
-  delegate_to: localhost
-  uri:
-    body: "{{ lookup('template', 'fps_profile_payload.j2') }}"
-    body_format: json
-    headers:
-      X-F5-Auth-Token: "{{ bigip_auth_token }}"
-    method: POST
-    status_code: 200, 201, 409
-    url: "https://{{ bigip_ip_addr }}:{{ bigip_mgmt_port }}/mgmt/tm/security/anti-fraud/profile"
-    validate_certs: no
-
 - name: creating DNS resolver
   delegate_to: localhost
   uri:
@@ -195,82 +165,6 @@
     url: "https://{{ bigip_ip_addr }}:{{ bigip_mgmt_port }}/mgmt/tm/net/dns-resolver"
     validate_certs: no
     
-    
-#####################Deploying profiles again because of some consistency issues. sometimes the rest call is successful but profile wasn't actually created.
-###############################################################################################################################################################
-
-- name: Deploying updating ASM Logging Profile to send to Remote Analytics Server
-  delegate_to: localhost
-  uri:
-    body: "{{ lookup('template', 'asm_logging_profile_payload.j2') }}"
-    body_format: json
-    headers:
-      X-F5-Auth-Token: "{{ bigip_auth_token }}"
-    method: POST
-    status_code: 200, 201, 409
-    url: "https://{{ bigip_ip_addr }}:{{ bigip_mgmt_port }}/mgmt/tm/security/log/profile"
-    validate_certs: no
-
-- name: Deploying updating ASM Logging ALL Profile
-  delegate_to: localhost
-  uri:
-    body: "{{ lookup('template', 'asm_logging_profile_all_payload.j2') }}"
-    body_format: json
-    headers:
-      X-F5-Auth-Token: "{{ bigip_auth_token }}"
-    method: POST
-    status_code: 200, 201, 409
-    url: "https://{{ bigip_ip_addr }}:{{ bigip_mgmt_port }}/mgmt/tm/security/log/profile"
-    validate_certs: no
-
-- name: Deploying updating AVR profile
-  delegate_to: localhost
-  uri:
-    body: "{{ lookup('template', 'avr_profile_payload.j2') }}"
-    body_format: json
-    headers:
-      X-F5-Auth-Token: "{{ bigip_auth_token }}"
-    method: POST
-    status_code: 200, 201, 409
-    url: "https://{{ bigip_ip_addr }}:{{ bigip_mgmt_port }}/mgmt/tm/ltm/profile/analytics"
-    validate_certs: no
-
-- name: Deploying updating HTTP profile
-  delegate_to: localhost
-  uri:
-    body: "{{ lookup('template', 'rs_http_profile_payload.j2') }}"
-    body_format: json
-    headers:
-      X-F5-Auth-Token: "{{ bigip_auth_token }}"
-    method: POST
-    status_code: 200, 201, 409
-    url: "https://{{ bigip_ip_addr }}:{{ bigip_mgmt_port }}/mgmt/tm/ltm/profile/http"
-    validate_certs: no
-    
-- name: Deploying updating DOSL7 profile
-  delegate_to: localhost
-  uri:
-    body: "{{ lookup('file', 'dosl7_profile_payload.json') }}"
-    body_format: json
-    headers:
-      X-F5-Auth-Token: "{{ bigip_auth_token }}"
-    method: POST
-    status_code: 200, 201, 409
-    url: "https://{{ bigip_ip_addr }}:{{ bigip_mgmt_port }}/mgmt/tm/security/dos/profile"
-    validate_certs: no
-
-- name: Deploying FPS profile
-  delegate_to: localhost
-  uri:
-    body: "{{ lookup('template', 'fps_profile_payload.j2') }}"
-    body_format: json
-    headers:
-      X-F5-Auth-Token: "{{ bigip_auth_token }}"
-    method: POST
-    status_code: 200, 201, 409
-    url: "https://{{ bigip_ip_addr }}:{{ bigip_mgmt_port }}/mgmt/tm/security/anti-fraud/profile"
-    validate_certs: no
-
     
 ############installing AS3#############################
 

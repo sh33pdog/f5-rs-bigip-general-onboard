@@ -11,13 +11,18 @@
 # CFT global parameters
 bigip_mgmt_port: 443
 validate_certs: no
+onboard_services:
+   - adc
+   - awaf
 
-
-
+onboard_cloud:
+   - aws
+   - vmware
+   
 # Internal varaiables (used to build the module)
 
 
-as3_rpm: "f5-appsvcs-3.2.0-7.noarch.rpm"
+as3_rpm: "f5-appsvcs-3.0.0-34.noarch.rpm"
 declerative_waf_rpm: "declarative_waf-0.2-001.noarch.rpm"
 
 # iAPP VARS
@@ -28,7 +33,6 @@ branch: "default_branch"
 partition: "Common"
 strict_updates: false
 aws_region: "facility"
-vpc: "default_location"
 
 vs_address: "0.0.0.0"
 vs_mask: "0.0.0.0"
