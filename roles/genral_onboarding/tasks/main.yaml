@@ -11,6 +11,33 @@
   until: (result.stdout.find("Active") != -1 or result.stdout.find("Standby") != -1 or result.stdout.find("Unlicensed") != -1)
   ignore_errors: yes
   
+- name: Provision AVR if necessary 
+  bigip_provision:
+    module: avr
+  delegate_to: localhost
+
+- name: Provision ASM if necessary
+  bigip_provision:
+    module: asm
+  delegate_to: localhost
+  when: '"awaf" in onboard_services'
+
+- name: Provision FPS if necessary 
+  bigip_provision:
+    module: fps
+  delegate_to: localhost
+  when: '"awaf" in onboard_services'
+
+  
+- name: Wait until BIG-IP is ready to make changes
+  bigip_command: 
+    commands: "run /util bash -c 'cat /var/prompt/ps1'"
+  delegate_to: localhost
+  delay: 30
+  register: result
+  retries: 60
+  until: (result.stdout.find("Active") != -1 or result.stdout.find("Standby") != -1 or result.stdout.find("Unlicensed") != -1)
+  ignore_errors: yes
 
 - name: Configures hostname
   bigip_command: 
@@ -166,42 +193,18 @@
     validate_certs: no
     
     
-############installing AS3#############################
-
-- name: get rpm lenth
-  shell: "wc -c {{ role_path }}/files/{{ as3_rpm }} | cut -f 1 -d ' '"
-  register: as3_rpm_len_output
-  
-- name: put rpm len in a variable
-  set_fact: 
-    as3_rpm_len: "{{ as3_rpm_len_output.stdout }}"
+############installing AS3############################# 
 
 - name: enable iappLX
   bigip_command: 
     commands: "run /util bash -c 'touch /var/config/rest/iapps/enable'"
   delegate_to: localhost
-  
-- name: uploading AS3 package
-  shell: "curl -kv https://{{ bigip_ip_addr }}:{{ bigip_mgmt_port }}/mgmt/shared/file-transfer/uploads/{{ as3_rpm }} -H 'Content-Type: application/octet-stream' -H 'Content-Range: 0-{{ as3_rpm_len | int -1 }}/{{ as3_rpm_len}}' -H 'Content-Length: {{ as3_rpm_len}}' -H 'Connection: keep-alive' -H 'X-F5-Auth-Token: {{ bigip_auth_token }}' --data-binary @{{ role_path }}/files/{{ as3_rpm }}"
-  register: installation
-  
-- name: set as3 install command
-  set_fact: 
-    as3_install_cmd: "'{'operation':'INSTALL','packageFilePath':'/var/config/rest/downloads/{{ as3_rpm }}'}'"
 
-- name: installing as3 package
+- name: Add an iAppLX package stored in a role
+  bigip_iapplx_package:
+    package: "{{ role_path }}/files/{{ as3_rpm }}"
   delegate_to: localhost
-  uri:
-    body: "{{ lookup('template', 'as3_install_cmd.json') }}"
-    body_format: json
-    headers:
-      X-F5-Auth-Token: "{{ bigip_auth_token }}"
-      Origin: "https://{{ bigip_ip_addr }}:{{ bigip_mgmt_port }}"
-    method: POST
-    status_code: 202, 200, 409
-    url: "https://{{ bigip_ip_addr }}:{{ bigip_mgmt_port }}/mgmt/shared/iapp/package-management-tasks"
-    validate_certs: no
-
+  
 ############################## saving bigip config####################   
     
 - name: Saving the bigip config
