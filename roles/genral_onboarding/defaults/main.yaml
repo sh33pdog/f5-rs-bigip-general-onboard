@@ -2,7 +2,7 @@
 #configure module wide defaults, don't configure any of the CFT/app specifc defaults. 
 # CFT/app specifc defaults should be configured in the template file. 
 
-
+vpc: "none"
 
 
 
