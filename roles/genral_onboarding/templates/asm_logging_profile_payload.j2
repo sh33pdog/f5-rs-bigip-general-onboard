@@ -42,21 +42,6 @@
             "servers": [ "{{vault_splunk_addr }}:{{vault_splunk_syslog_port}}" ]
         }
     ],
-	    "botDefense": [
-        {
-            "name": "asm_log_to_splunk",
-            "partition": "Common",
-            "filter": {
-                "logBotSignatureMatchedRequests": "enabled",
-                "logCaptchaChallengedRequests": "enabled",
-                "logChallengedRequests": "enabled",
-                "logIllegalRequests": "enabled",
-                "logLegalRequests": "enabled"
-            },
-            "localPublisher": "/Common/local-db-publisher",
-            "remotePublisher": "/Common/logging-publisher-f5_analytics"
-        }
-    ],
 	    "dosApplication": [
         {
             "name": "asm_log_to_splunk",
